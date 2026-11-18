@@ -23,6 +23,12 @@ services:
   db:
     image: postgres:latest
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+      - /var/run/postgresql
     volumes:
       - postgres-data:/var/lib/postgresql/data
     environment:
