@@ -1,3 +1,4 @@
+
 name: Deploy
 
 on:
@@ -60,7 +61,20 @@ jobs:
 
           pm2 restart todo-backend --update-env
 
-          curl --fail --silent --show-error \
-            http://127.0.0.1/api/todos >/dev/null
+          for attempt in {1..15}; do
+            if curl --fail --silent --show-error \
+              http://127.0.0.1/api/todos >/dev/null; then
+              echo "Health check passed!"
+              break
+            fi
+
+            echo "Backend not ready yet. Retrying in 2 seconds..."
+            sleep 2
+          done
+
+          if [ "$attempt" -eq 15 ]; then
+            echo "Health check failed after 15 attempts!"
+            exit 1
+          fi
 
           echo "Deployment completed successfully!"
