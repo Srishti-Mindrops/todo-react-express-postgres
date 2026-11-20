@@ -53,7 +53,7 @@ jobs:
           pipx run semgrep scan --config auto --error .
 
       - name: Scan dependencies and configuration
-        uses: aquasecurity/trivy-action@0.28.0
+        uses: aquasecurity/trivy-action@0.36.0
         with:
           scan-type: fs
           scan-ref: .
@@ -62,7 +62,7 @@ jobs:
           exit-code: '1'
 
       - name: Scan GitHub Actions workflows
-        uses: zizmorcore/zizmor-action@v1
+        uses: zizmorcore/zizmor-action@v0.8.0
 
   deploy:
     name: Deploy to EC2
